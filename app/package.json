@@ -1,28 +1,19 @@
 {
-  "name": "app",
+  "name": "dhbw-truffle-project",
   "version": "0.1.0",
+  "description": "A simple project to learn Ethereum Smart Contract development",
   "private": true,
-  "dependencies": {
-    "@drizzle/react-components": "^1.5.0",
-    "@drizzle/react-plugin": "^1.5.0",
-    "@drizzle/store": "^1.5.0",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-scripts": "2.1.3"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "webpack",
+    "dev": "webpack-dev-server"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.6.0",
+    "webpack": "^4.28.1",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "dependencies": {
+    "web3": "^1.0.0-beta.37"
+  }
 }
