@@ -31,11 +31,16 @@ contract DHBWCoin {
   }
 
   function transfer(address recipient, uint256 amount) public returns (bool) {
-    return transferFrom(msg.sender, recipient, amount);
+    require(_balances[msg.sender] - amount >= 0, "Sender does not have enough coins");
+    _balances[msg.sender] -= amount;
+    _balances[recipient] += amount;
+    emit Transfer(msg.sender, recipient, amount);
+    return true;
   }
 
   function approve(address spender, uint256 amount) public returns (bool) {
     _allowances[msg.sender][spender] = amount;
+    emit Approval(msg.sender, spender, amount);
     return true;
   }
 
@@ -43,12 +48,14 @@ contract DHBWCoin {
     return _allowances[owner][spender];
   }
 
-  function transferFrom(address owner, address recipient, uint256 amount) public returns (bool) {
-    if (_balances[owner] - amount < 0) {
-      revert("Sender does not have enough coins");
-    }
-    _balances[owner] -= amount;
+  function transferFrom(address from, address recipient, uint256 amount) public returns (bool) {
+    require(_allowances[from][msg.sender] >= amount, "Allowance does not suffice");
+    require(_balances[from] - amount >= 0, "Sender does not have enough coins");
+    _balances[from] -= amount;
     _balances[recipient] += amount;
+    _allowances[from][msg.sender] -= amount;
+    emit Transfer(from, recipient, amount);
+
     return true;
   }
 }
