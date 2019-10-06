@@ -5,6 +5,9 @@ contract DHBWCoin {
   mapping (address => mapping (address => uint256)) private _allowances;
   uint256 private _totalSupply;
 
+  event Transfer(address indexed from, address indexed recipient, uint256 amount);
+  event Approval(address indexed owner, address indexed spender, uint256 amount);
+
   constructor() public {
     _totalSupply = 10000;
     _balances[msg.sender] = _totalSupply;
