@@ -23,3 +23,22 @@ yarn start
 Now, the frontend should be running on `localhost:8080`.
 
 Finally, install [Metamask](https://metamask.io/) in your browser.
+
+## Remote Development
+
+If you don't want to install python and/or node you can use the following method
+
+### Requirements
+
+- Docker (not Docker-Toolbox)
+  - make sure its running
+- VS Code insiders
+  - Extension: Remote Development
+
+### Instructions
+
+1. clone repo
+2. open folder in vs code
+3. open commands (CTRL + SHIFT + P)
+4. select: Remote-Containers: Open Folder in Container...
+5. wait until the installation is finished
