@@ -38,7 +38,7 @@ If you don't want to install python and/or node you can use the following method
 ### Instructions
 
 1. clone repo
-2. open folder in vs code
+2. open folder in vs code insiders
 3. open commands (CTRL + SHIFT + P)
 4. select: Remote-Containers: Open Folder in Container...
 5. wait until the installation is finished
