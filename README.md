@@ -30,10 +30,10 @@ If you don't want to install python and/or node you can use the following method
 
 ### Requirements
 
-- Docker (not Docker-Toolbox)
+- [Docker](https://www.docker.com/products/docker-desktop) (not Docker-Toolbox)
   - make sure its running
-- VS Code insiders
-  - Extension: Remote Development
+- [VS Code insiders](https://code.visualstudio.com/insiders/)
+  - Extension: [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
 
 ### Instructions
 
