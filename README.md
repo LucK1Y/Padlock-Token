@@ -24,6 +24,8 @@ Now, the frontend should be running on `localhost:8080`.
 
 Finally, install [Metamask](https://metamask.io/) in your browser.
 
+The Block-Chain Seed is: "come craft limit group stock hollow front fantasy scare river animal settle"
+
 ## Remote Development
 
 If you don't want to install Python and/or Node.js you can use the following
