@@ -24,12 +24,6 @@ Now, the frontend should be running on `localhost:8080`.
 
 Finally, install [Metamask](https://metamask.io/) in your browser.
 
-The Block-Chain Seed is
-
-```sh
-come craft limit group stock hollow front fantasy scare river animal settle
-```
-
 ## Remote Development
 
 If you don't want to install Python and/or Node.js you can use the following
@@ -52,3 +46,11 @@ method
 6. Open a terminal via Terminal -> New Terminal
 7. Run `./run.sh`
 8. In the open tmux session, run `truffle migrate`
+
+
+The Block-Chain Seed is
+
+```sh
+come craft limit group stock hollow front fantasy scare river animal settle
+```
+
