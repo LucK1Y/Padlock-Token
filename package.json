@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/mkqavi/dhbw-truffle-project#readme",
   "devDependencies": {
-    "truffle": "^5.0.39"
+    "truffle": "^5.1.47"
   }
 }
