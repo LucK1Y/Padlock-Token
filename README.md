@@ -57,7 +57,7 @@
 7. Run `./run.sh`
 8. In the open tmux session, run `yarn migrate`
 
-You can now access the frontend at http://locahost:8080 or run `yarn test` in
+You can now access the frontend at http://localhost:8080 or run `yarn test` in
 the VS Code console. See
 [Connect to frontend in browser](#connect-to-frontend-in-browser) on how to use
 the frontend.
