@@ -2,53 +2,62 @@
 
 ## Installation instructions
 
-Download all dependencies in the root and app directory, e.g.
+### Contracts
 
-```sh
-yarn
-cd app
-yarn
-```
+1. Install Python 3 and Node LTS on your system.
+2. Clone this repository.
+3. In the repository directory, run `npm i` or `yarn`.
+4. Run `npm start` or `yarn start`.
+5. Run `npm run migrate` or `yarn migrate`.
+6. Run `npm test` or `yarn test`.
 
-Download [Ganache](https://www.trufflesuite.com/ganache) and start it on your
-device. Afterwards, run
+> A GUI version of [Ganache](https://www.trufflesuite.com/ganache) also can be
+> downloaded.
 
-```sh
-cd ..
-yarn run truffle migrate
-cd app
-yarn start
-```
+### Frontend
 
-Now, the frontend should be running on `localhost:8080`.
+1. In the `/app` directory, run `npm i` or `yarn`.
+2. In the `/app` directory, run `npm run dev` or `yarn dev`.
 
-Finally, install [Metamask](https://metamask.io/) in your browser.
+### Connect to frontend in browser
+
+1. Install the [Metamask](https://metamask.io/) extension in your browser.
+2. In the setup dialog, click _Import Wallet_.
+3. As the _Seed Phrase_, enter the following:
+
+   ```
+   come craft limit group stock hollow front fantasy scare river animal settle
+   ```
+
+4. Enter any password and click import.
+5. In the Metamask extension, click on the _Main Ethereum Network_ dropdown and
+   select _Custom RPC_. Choose a network name and enter as RPC URL
+   `http://localhost:7545`.
+6. Now you can try to connect to the frontend, if running, at
+   http://localhost:8080.
+7. If you can see in that you own 100 DHBW Coins in the frontend, everything is
+   set up correctly.
 
 ## Remote Development
-
-If you don't want to install Python and/or Node.js you can use the following
-method
 
 ### Requirements
 
 - [Docker](https://www.docker.com/products/docker-desktop) (not Docker-Toolbox)
-  - make sure its running
 - [Visual Studio Code](https://code.visualstudio.com/)
   - Extension: [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
 
 ### Instructions
 
-1. Clone repo
-2. Open folder in VS Code
+1. Clone this repository
+2. Open directory in VS Code
 3. Open commands (CTRL/⌘ + SHIFT + P)
-4. Select: Remote-Containers: Reopen in Container
-5. Wait until the installation is finished
+4. Select: _Remote-Containers: Reopen in Container_
+5. Wait until the build is finished
 6. Open a terminal via Terminal -> New Terminal
 7. Run `./run.sh`
-8. In the open tmux session, run `truffle migrate`
+8. In the open tmux session, run `yarn migrate`
 
-The Block-Chain Seed is
-
-```sh
-come craft limit group stock hollow front fantasy scare river animal settle
-```
+You can now access the frontend at http://locahost:8080 or run `yarn test` in
+the VS Code console. See
+[Connect to frontend in browser](#connect-to-frontend-in-browser) on how to use
+the frontend.
