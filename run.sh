@@ -2,6 +2,6 @@
 tmux \
     new-session -d\; \
     split-window -h 'cd app && yarn && yarn dev --host 0.0.0.0'\; \
-    split-window -v 'ganache-cli -h 0.0.0.0 -p 7545 -i 5777 -s dhbw'\; \
+    split-window -v 'yarn && yarn start'\; \
     select-pane -t 0\; \
     attach
