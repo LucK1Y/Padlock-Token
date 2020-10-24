@@ -15,7 +15,7 @@ contract PadlockToken {
         return "Padlock";
     }
 
-    function keychain() public view returns (uint256[]) {
+    function keychain() public view returns (uint256[] memory) {
         return _keychain;
     }
 
@@ -24,25 +24,25 @@ contract PadlockToken {
     }
 
     function random() private view returns (uint) {
-        return uint(keccak256(block.difficulty, now));
+        return uint(keccak256( abi.encodePacked(block.timestamp))); //block.difficulty 
     } 
 
-    function createToken() public view public returns (bool) {
+    function createToken() public returns (uint256) {
         //Create padlock (random uint256)
-        uint256 private newPadlock;
+        uint256 newPadlock;
         
         //Check if keychain contains padlock
         //If keychain contains padlock, create new padlock
-        bool searchingKey=True;
+        bool searchingKey=true;
         while(searchingKey){
-            searchingKey=False;
+            searchingKey=false;
 
             newPadlock = random();
 
             for (uint256 i = 0; i < _keychain.length; i++) {
                     // if newPadlock is used in keychain => break and start again
                     if (_keychain[i] ==newPadlock){
-                        searchingKey=True;
+                        searchingKey=true;
                         break;
                     }
                 }  
@@ -50,8 +50,8 @@ contract PadlockToken {
 
         //Else assosiate padlock with wallet
         _keychain.push(newPadlock);
-        _balances[msg.sender] = newPadlock;
+        _balances[newPadlock] = msg.sender;
         
-        return true;
+        return newPadlock;
     }
 }
