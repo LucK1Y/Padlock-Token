@@ -21,11 +21,13 @@ contract("PadlockToken", (accounts) => {
   });
 
   it("should create new PadlockToken", async () => {
-    newPadlock = await instance.createToken();
+    const  tx= await instance.createToken();
 
-    console.log(newPadlock.logs);
+    assert.equal(tx.receipt.status, true, "transcation should run through");
 
-    assert.equal(typeof(newPadlock.receipt.status), "boolean", "voting should be possible");
+  // newPadlock key
+    assert.equal(await instance.balances);
+    
 
     //tx.receipt.status
     assert.equal(typeof (newPadlock), Int32Array, "should create new PadlockToken");

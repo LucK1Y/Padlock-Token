@@ -1,11 +1,17 @@
 pragma solidity ^0.7.2;
 
 contract PadlockToken {
+    struct Lock {
+        string text;
+        uint256 id;
+        address owner;
+        string meta;
+    }
+
     mapping(uint256 => address) private _balances;
     uint256[] private _keychain;
 
-    constructor() public {
-    }
+    constructor() public {}
 
     function name() public pure returns (string memory) {
         return "PadlockToken";
@@ -23,35 +29,35 @@ contract PadlockToken {
         return _balances[token];
     }
 
-    function random() private view returns (uint) {
-        return uint(keccak256( abi.encodePacked(block.timestamp))); //block.difficulty 
-    } 
+    function random() private view returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(block.timestamp))); //block.difficulty
+    }
 
     function createToken() public returns (uint256) {
         //Create padlock (random uint256)
         uint256 newPadlock;
-        
+
         //Check if keychain contains padlock
         //If keychain contains padlock, create new padlock
-        bool searchingKey=true;
-        while(searchingKey){
-            searchingKey=false;
+        bool searchingKey = true;
+        while (searchingKey) {
+            searchingKey = false;
 
             newPadlock = random();
 
             for (uint256 i = 0; i < _keychain.length; i++) {
-                    // if newPadlock is used in keychain => break and start again
-                    if (_keychain[i] ==newPadlock){
-                        searchingKey=true;
-                        break;
-                    }
-                }  
+                // if newPadlock is used in keychain => break and start again
+                if (_keychain[i] == newPadlock) {
+                    searchingKey = true;
+                    break;
+                }
+            }
         }
 
         //Else assosiate padlock with wallet
         _keychain.push(newPadlock);
         _balances[newPadlock] = msg.sender;
-        
+
         return newPadlock;
     }
 }
