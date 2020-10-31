@@ -25,9 +25,9 @@ contract PadlockToken {
         return _keychain;
     }
 
-    // function owner(uint256 token) public view returns (address) {
-    //     return _balances[token];
-    // }
+     function owner(Lock token) public view returns (address) {
+         return token.owner;
+    }
 
     function createLockKey() private view returns (uint256) {
         return _keychain.length + 3;
