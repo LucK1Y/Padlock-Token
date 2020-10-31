@@ -8,7 +8,7 @@ contract PadlockToken {
         string meta;
     }
 
-    mapping(uint256 => address) private _balances;
+    mapping(address => Lock) private _balances;
     uint256[] private _keychain;
 
     constructor() public {}
@@ -25,39 +25,36 @@ contract PadlockToken {
         return _keychain;
     }
 
-    function owner(uint256 token) public view returns (address) {
-        return _balances[token];
+    // function owner(uint256 token) public view returns (address) {
+    //     return _balances[token];
+    // }
+
+    function createLockKey() private view returns (uint256) {
+        return _keychain.length + 3;
     }
 
-    function random() private view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(block.timestamp))); //block.difficulty
-    }
+    function createToken() public returns (bool) {
 
-    function createToken() public returns (uint256) {
-        //Create padlock (random uint256)
-        uint256 newPadlock;
+        uint256 lock_id=createLockKey();
 
-        //Check if keychain contains padlock
-        //If keychain contains padlock, create new padlock
-        bool searchingKey = true;
-        while (searchingKey) {
-            searchingKey = false;
+        //Create new Lock
+        Lock memory newLock = Lock(
+            
+            // set text-name as some weird bytes
+            string(abi.encodePacked(lock_id)),
+            // set lock id
+            lock_id,
+            // set sender as owner
+            msg.sender,
+            // set some meta string
+            "hello World!"
+        );
 
-            newPadlock = random();
 
-            for (uint256 i = 0; i < _keychain.length; i++) {
-                // if newPadlock is used in keychain => break and start again
-                if (_keychain[i] == newPadlock) {
-                    searchingKey = true;
-                    break;
-                }
-            }
-        }
+        // assosiate padlock with wallet
+        _keychain.push(newLock.id);
+        _balances[msg.sender] = newLock;
 
-        //Else assosiate padlock with wallet
-        _keychain.push(newPadlock);
-        _balances[newPadlock] = msg.sender;
-
-        return newPadlock;
+        return true;
     }
 }
