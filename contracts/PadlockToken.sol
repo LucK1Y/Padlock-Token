@@ -25,17 +25,11 @@ contract PadlockToken {
         return _keychain;
     }
 
-     function owner(Lock token) public view returns (address) {
+     function owner(Lock token ) public view returns (address memory) {
          return token.owner;
     }
 
-    function createLockKey() private view returns (uint256) {
-        return _keychain.length + 3;
-    }
-
-    function createToken() public returns (bool) {
-
-        uint256 lock_id=createLockKey();
+    function createToken(uint256 lock_id ) public returns (bool memory) {
 
         //Create new Lock
         Lock memory newLock = Lock(
@@ -50,11 +44,14 @@ contract PadlockToken {
             "hello World!"
         );
 
-
-        // assosiate padlock with wallet
-        _keychain.push(newLock.id);
-        _balances[msg.sender] = newLock;
-
-        return true;
+        // assosiate padlock with wallet       
+        if(_keychain.includes(newLock.id)) {
+            require(false,"LockId is already in use");
+            return false;
+        } else {
+            _keychain.push(newLock.id);
+            _balances[msg.sender] = newLock;
+            return true;
+        }             
     }
 }

@@ -11,6 +11,7 @@ function verifySignature(cleartext) {
         const { valid } = verified.signatures[0];
         if (valid) {
             console.log('signed by key id ' + verified.signatures[0].keyid.toHex());
+            //TO-DO Check if verified.signatures[0].keyid.toHex()) == token_owner
         } else {
             // throw new Error('signature could not be verified');
             return false;
