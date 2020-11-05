@@ -51,13 +51,11 @@ contract PadlockToken {
         );
 
         // assosiate padlock with wallet       
-        if(includes(_keychain,newLock.id)) {
-            require(false,"LockId is already in use");
-            return false;
-        } else {
-            _keychain.push(newLock.id);
-            _balances[msg.sender] = newLock;
-            return true;
-        }             
+        require(!includes(_keychain,newLock.id),"LockId is already in use");
+
+        _keychain.push(newLock.id);
+        _balances[msg.sender] = newLock;
+        return true;
+        }         
     }
 }
