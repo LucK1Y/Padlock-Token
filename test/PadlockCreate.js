@@ -21,13 +21,13 @@ contract("PadlockToken", (accounts) => {
   });
 
   it("should create new PadlockToken", async () => {
-    const  tx= await instance.createToken();
+    const  tx= await instance.createToken(1111);
 
     assert.equal(tx.receipt.status, true, "transcation should run through");
  
   });
 
   it("should have correct values", async () => {
-
+    assert.equal(true,true)
   });
 });

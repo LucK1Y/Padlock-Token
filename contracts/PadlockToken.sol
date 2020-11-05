@@ -1,4 +1,5 @@
 pragma solidity ^0.7.2;
+pragma experimental ABIEncoderV2;
 
 contract PadlockToken {
     struct Lock {
@@ -25,11 +26,16 @@ contract PadlockToken {
         return _keychain;
     }
 
-     function owner(Lock token ) public view returns (address memory) {
+     function owner(Lock memory token ) public view returns (address) {
          return token.owner;
     }
 
-    function createToken(uint256 lock_id ) public returns (bool memory) {
+    function includes(uint256[] memory arr, uint256 key) private returns (bool){
+        return false;
+    }
+
+
+    function createToken(uint256 lock_id ) public returns (bool) {
 
         //Create new Lock
         Lock memory newLock = Lock(
@@ -45,7 +51,7 @@ contract PadlockToken {
         );
 
         // assosiate padlock with wallet       
-        if(_keychain.includes(newLock.id)) {
+        if(includes(_keychain,newLock.id)) {
             require(false,"LockId is already in use");
             return false;
         } else {
