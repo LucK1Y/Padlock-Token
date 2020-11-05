@@ -11,7 +11,7 @@ contract PadlockToken {
 
     mapping(address => Lock) private _balances;
     uint256[] private _keychain;
-    mapping (uint256 => bool) public _keychain_map;
+    mapping(uint256 => bool) public _keychain_map;
 
     constructor() public {}
 
@@ -27,20 +27,17 @@ contract PadlockToken {
         return _keychain;
     }
 
-     function owner(Lock memory token ) public view returns (address) {
-         return token.owner;
+    function owner(Lock memory token) public view returns (address) {
+        return token.owner;
     }
 
-    function includes(uint256 key) private returns (bool){
+    function includes(uint256 key) private returns (bool) {
         return _keychain_map[key];
     }
 
-
-    function createToken(uint256 lock_id ) public returns (bool) {
-
+    function createToken(uint256 lock_id) public returns (bool) {
         //Create new Lock
         Lock memory newLock = Lock(
-            
             // set text-name as some weird bytes
             string(abi.encodePacked(lock_id)),
             // set lock id
@@ -51,15 +48,12 @@ contract PadlockToken {
             "hello World!"
         );
 
-        // assosiate padlock with wallet       
-        if(includes(newLock.id)) {
-            require(false,"LockId is already in use");
-            return false;
-        } else {
-            _keychain.push(newLock.id);
-            _keychain_map[newLock.id]=true;
-            _balances[msg.sender] = newLock;
-            return true;
-        }             
+        // assosiate padlock with wallet
+        require(!includes(newLock.id), "LockId is already in use");
+
+        _keychain.push(newLock.id);
+        _keychain_map[newLock.id] = true;
+        _balances[msg.sender] = newLock;
+        return true;
     }
 }
