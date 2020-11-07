@@ -15,8 +15,8 @@ contract("PadlockToken", (accounts) => {
   });
 
   it("should keychain be empty", async () => {
-    assert.equal(typeof(await instance.keychain), "function", "Keychain should be array");
-    assert.equal(await instance.keychain.length, 0, "Keychain should be empty");
+    // assert.equal(typeof(await instance.keychain), "function", "Keychain should be array");
+    assert.equal(await instance.getLockCount(), 0, "Keychain should be empty");
 
   });
 
