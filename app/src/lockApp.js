@@ -20,6 +20,8 @@ var padlockEtherium = require('./lockEtherium')
 var token_id;
 var filename = "id.txt"
 
+padlockEtherium.start_EtherumBE();
+
 //Read token_id
 if (fs.exists(filename)) {
 
@@ -31,24 +33,21 @@ if (fs.exists(filename)) {
 } else {
     //If factory setting, create token
     var id;
-    crypto.randomBytes(256, function (err, buffer) {
-        id = buffer.toString('hex');
-    });
     var created_successfully = false;
-    created_successfully = createToken(id);
 
     while (created_successfully == false) {
         crypto.randomBytes(256, function (err, buffer) {
             id = buffer.toString('hex');
         });
-        created_successfully = createToken(id);
+        created_successfully = padlockEtherium.createToken(id);
     }
 
-    fs.writeFile("id.txt", id, function (err) {
+    fs.writeFile(filename, id, function (err) {
         if (err) {
             return console.log(err);
         }
         console.log("The file was saved!");
+        token_id = id;
     });
 }
 
@@ -64,9 +63,14 @@ app.get('/', function (req, res) {
 })
 
 app.post("/unlock", function (req, res) {
-    // check values okay
+    //TO-DO implement timestamp
 
-    if (opgpHandler.verifySignature(req.body.message)) {
+    var owner_id = padlockEtherium.check_owner(token_id)
+    var message_id = opgpHandler.verifySignature(req.body.message)
+
+    if (owner_id = message_id) {
+        
+
         res.status(202).send("Message accepted.")
     } else {
         res.status(423).send("Message NOT accepted.")
