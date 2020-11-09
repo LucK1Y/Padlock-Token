@@ -1,5 +1,5 @@
 // IMPORTS PGP
-const keyStore = require("./pgp_testVals");
+const keyStore = require("../resourcen/pgp_testVals");
 
 function verifySignature(cleartext) {
     return (async () => {

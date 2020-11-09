@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const keyStore = require("./pgp_testVals");
+const keyStore = require("../resourcen/pgp_testVals");
 
 
 const url="http://localhost:3000/unlock"
@@ -15,7 +15,7 @@ const signed_text=(async () => {
 
     const { data: cleartext } = await openpgp.sign({
         message: openpgp.cleartext.fromText(text), // CleartextMessage or Message object
-        privateKeys: [privateKey]                             // for signing
+        privateKeys: [privatWeKey]                             // for signing
     });
     console.log(cleartext); // '-----BEGIN PGP SIGNED MESSAGE ... END PGP SIGNATURE-----'
 

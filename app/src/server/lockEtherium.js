@@ -38,25 +38,6 @@ const App = {
         this.lockContract.owner()
     }
 
-
-    //Probably not needed
-    // refreshBalance: async function () {
-    //     const { balanceOf, decimals } = this.dhbw.methods;
-    //     const balance = await balanceOf(this.account).call();
-    //     const decimal = await decimals().call();
-
-    //     const balanceElement = document.getElementsByClassName("balance")[0];
-    //     balanceElement.innerHTML = `${balance / Math.pow(10, decimal)}.${(
-    //         balance % 100
-    //     )
-    //         .toString()
-    //         .padStart(2, "0")}`;
-    // },
-
-    // setStatus: function (message) {
-    //     const status = document.getElementById("status");
-    //     status.innerHTML = message;
-    // },
 };
 
 
