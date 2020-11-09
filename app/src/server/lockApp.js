@@ -4,7 +4,7 @@ const express = require('express')
 var bodyParser = require('body-parser');
 var crypto = require('crypto')
 
-var fs = require('fs');
+const config = require("./configHandler")
 
 
 // import OPGP Handler
@@ -17,41 +17,10 @@ app.use(bodyParser.json());
 
 //Lock Setup
 var padlockEtherium = require('./lockEtherium')
-var token_id;
-var filename = "id.txt"
+
 
 padlockEtherium.start_EtherumBE();
-
-//Read token_id
-if (fs.exists(filename)) {
-
-    fs.readFile(filename, 'utf8', function (err, data) {
-        if (err) throw err;
-        console.log('OK: ' + filename);
-        token_id = data.replace(" ", "").replace("\n", "");
-    });
-} else {
-    //If factory setting, create token
-    var id;
-    var created_successfully = false;
-
-    while (created_successfully == false) {
-        crypto.randomBytes(256, function (err, buffer) {
-            id = buffer.toString('hex');
-        });
-        created_successfully = padlockEtherium.createToken(id);
-    }
-
-    fs.writeFile(filename, id, function (err) {
-        if (err) {
-            return console.log(err);
-        }
-        console.log("The file was saved!");
-        token_id = id;
-    });
-}
-
-
+config.startConfig();
 
 app.get('/', function (req, res) {
     res.send(
@@ -62,21 +31,57 @@ app.get('/', function (req, res) {
     )
 })
 
+
+/**
+ * Request Body:
+ * 
+ *          { "message" : " < TimeStamp>"
+ *          }
+ */
 app.post("/unlock", function (req, res) {
-    //TO-DO implement timestamp
-
-    var owner_id = padlockEtherium.check_owner(token_id)
-    var message_id = opgpHandler.verifySignature(req.body.message)
-
-    if (owner_id = message_id) {
-        
-
-        res.status(202).send("Message accepted.")
+    //Compare user and owner
+    
+    var owner_public_key = config.owner_public_key
+    var lock_id = config.lock_id
+    
+    //Check if person trying to unlock is owner
+    if (opgpHandler.verifySignature(req.body.message, owner_public_key)) {
+        //Check if timestamp is less than 1s (1000ms) old
+        if (Date.now() - 1000 < req.body.message) {
+            res.status(202).send("Message accepted.")
+        } else {
+            res.status(423).send("Timestamp too old.")
+        }   
     } else {
         res.status(423).send("Message NOT accepted.")
     }
 
 })
 
+/**
+ * 
+ *  Request body:
+ *          { "pubk": "-----BEGIN PGP PUBLIC KEY BLOCK----- ............... "
+ *          }
+ * 
+ */
+app.post("/register", function (req, res) {
+    //If factory setting, create token
+    var lock_id;
+    var created_successfully = false;
+    var owner_public_key = req.body.pubk;
+    
+    while (created_successfully == false) {
+        crypto.randomBytes(256, function (err, buffer) {
+            lock_id = buffer.toString('hex');
+        });
+        created_successfully = padlockEtherium.createToken(lock_id, owner_public_key);
+    }
+
+    config.createConfigFile(lock_id, owner_public_key)
+})
+
 console.log("Starting Server on ", 3000)
 app.listen(3000)
+
+//TODO save public key in blockchain and not in id.txt

@@ -5,7 +5,7 @@ const keyStore = require("../resourcen/pgp_testVals");
 const url="http://localhost:3000/unlock"
 
 
-const text="hello text";
+const text= Date.now();
 
 const signed_text=(async () => {
 

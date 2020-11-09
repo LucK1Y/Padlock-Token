@@ -9,7 +9,7 @@ contract PadlockToken {
         string meta;
     }
 
-    mapping(address => Lock) private _balances;
+    // mapping(uint256 => Lock) private _locks;
     uint256 private _lockCount;
     mapping(uint256 => bool) public _keychain;
 
@@ -34,15 +34,22 @@ contract PadlockToken {
     //     return _keychain;
     // }
 
-    function owner(Lock memory token) public view returns (address) {
-        return token.owner;
-    }
+    // function getOwnerForLock(uint256 lock_id) public view returns (address) {
+    //     Lock memory lock = _locks[lock_id];
+    //     require(lock.id != 0,"There is no lock for this id!");
+
+    //     return lock.owner;
+    // }
 
     function includes(uint256 key) private returns (bool) {
         return _keychain[key];
     }
 
-    function createToken(uint256 lock_id) public returns (bool) {
+    function createToken(uint256 lock_id, address owner) public returns (bool) {
+
+        // check lock_id new
+        require(!includes(lock_id), "LockId is already in use");
+
         //Create new Lock
         Lock memory newLock = Lock(
             // set text-name as some weird bytes
@@ -50,18 +57,17 @@ contract PadlockToken {
             // set lock id
             lock_id,
             // set sender as owner
-            msg.sender,
+            owner,
             // set some meta string
             "hello World!"
         );
 
-        // check lock_id new
-        require(!includes(newLock.id), "LockId is already in use");
-
         // assosiate padlock with wallet
         _keychain[newLock.id]=true;
         _lockCount = _lockCount+1;
-        _balances[msg.sender] = newLock;
+
+        _locks[lock_id]=newLock;
+        //_private_keychain[]
         return true;
     }
 }

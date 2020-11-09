@@ -1,12 +1,12 @@
 // IMPORTS PGP
 const keyStore = require("../resourcen/pgp_testVals");
 
-function verifySignature(cleartext) {
+function verifySignature(cleartext,pubk) {
     return (async () => {
 
         const verified = await openpgp.verify({
             message: await openpgp.cleartext.readArmored(cleartext),           // parse armored message
-            publicKeys: (await openpgp.key.readArmored(keyStore.publicKeyArmored)).keys // for verification
+            publicKeys: (await openpgp.key.readArmored(pubk)).keys // for verification
         });
         const { valid } = verified.signatures[0];
         if (valid) {

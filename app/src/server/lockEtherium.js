@@ -1,75 +1,61 @@
 const padlockTokenArtifact = require("../../build/contracts/PadlockToken.json");
 
-const Web3Eth = require('web3-eth');
-
-const eth = new Web3Eth('http://127.0.0.1:7545');//'ws://localhost:8546');
-
-
+// https://web3js.readthedocs.io/en/v1.2.11/include_package-core.html?highlight=HttpProvider#example
 var Web3 = require('web3');
-var web3 = new Web3(Web3.givenProvider || 'ws://some.local-or-remote.node:8546');
+var web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545'));
 
-const App = {
-    account: null,
-    lockContract: null,
+var contract;
+var account;
 
-    start: async function () {
-        // const { web3 } = this;
-
-        try {
-            // get contract instance
-            const networkId = await web3.eth.net.getId();
-
-            const deployedNetwork = padlockTokenArtifact.networks[networkId];
-            this.lockContract = new web3.eth.Contract(
-                padlockTokenArtifact.abi, deployedNetwork.address
-            );
-
-            // get accounts
-            const accounts = await web3.eth.getAccounts();
-            this.account = accounts[0];
-
-            this.refreshBalance();
-        } catch (error) {
-            console.error("Could not connect to contract or chain.");
-        }
-    },
-
-    check_owner: function (params) {
-        this.lockContract.owner()
-    }
-
-};
-
-
-function start_EtherumBE() {
-    // if (ethereum) {
-    //     // use MetaMask's provider
-    //     App.web3 = new Web3(window.ethereum);
-    //     window.ethereum.enable(); // get permission to access accounts
-    // } else {
-    console.warn(
-        "No web3 detected. Falling back to http://127.0.0.1:7545. You should remove this fallback when you deploy live"
-    );
-    // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-    App.web3 = new Web3(
-        new Web3.providers.HttpProvider("http://127.0.0.1:7545")
-    );
-    // }
-
+function startEtherumServer() {
     (async () => {
-        App.start();
-    })();
 
+
+        const networkId = await web3.eth.net.getId();
+
+        const deployedNetwork = padlockTokenArtifact.networks[networkId];
+        contract = new web3.eth.Contract(
+            padlockTokenArtifact.abi, deployedNetwork.address
+        );
+
+        // get accounts
+        const accounts = await web3.eth.getAccounts();
+        account = accounts[0];
+
+    })();
 }
+
 
 function createToken(id) {
-    const { createToken_raw } = window.App.methods;
 
-    createToken_raw(id);
+    var { createToken, name } = contract.methods
+
+    const rt = await name().call();
 }
 
 
+
+// function get_owner(lock_id) {
+
+//     return (async () => {
+
+//         var { getLockForOwner } = contract.methods
+
+//         const owner_id = await getLockForOwner(lock_id).call();
+
+//         if (owner_id != NULL) {
+//             return owner_id
+//         } else {
+//             return -1
+//         }
+        
+
+
+//     })();
+// }
+
 module.exports = {
+    startEtherumServer: startEtherumServer,
     createToken: createToken,
-    start_EtherumBE: start_EtherumBE
+    check_owner: check_owner
 }
