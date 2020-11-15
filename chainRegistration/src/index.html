@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chain Registration</title>
+
+    <style>
+        input,textarea  {
+            width: 100%;
+        }
+        form {
+            width: 300px;
+        }
+        #id_field{
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <h1>Register Lock</h1>
+        Id: <p id="id_field"></p>
+        <form onsubmit="App.registerLock()">
+            PublicKey Owner: <textarea required id="pubK_input"></textarea>
+
+            <button type="submit">Schloss Registrieren</button>
+            
+        </form>
+    </section>
+
+    <script src="index.js"></script>
+</body>
+
+</html>
