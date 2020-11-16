@@ -6,6 +6,8 @@ contract("PadlockToken", (accounts) => {
   const carol = accounts[2];
   const daniel = accounts[3];
 
+  const lock_id = "awdwadwadwadwadawdwa";
+  const pubk = "pubKadawdawd";
 
   let newPadlock;
   let instance;
@@ -14,20 +16,27 @@ contract("PadlockToken", (accounts) => {
     instance = await PadlockToken.deployed();
   });
 
-  it("should keychain be empty", async () => {
-    // assert.equal(typeof(await instance.keychain), "function", "Keychain should be array");
-    assert.equal(await instance.getLockCount(), 0, "Keychain should be empty");
+  it("Register Key", async () => {
+    const tx = await instance.registerKey(pubk, lock_id);
+
+    assert.equal(tx.receipt.status, true, "Returns status successfull");
+  });
+
+  it("Get Owner Key", async () => {
+    const shall_pubk = await instance.getOwnerKey(lock_id);
+    assert.equal(shall_pubk, pubk, "Returns successfully");
+  });
+  it("Transfer Key", async () => {
+    // Not Implemented yet
+    const tx = await instance.transferKey(pubk, lock_id);
+    assert.equal(tx.receipt.status, true, "Returns status successfull");
+
+  });
+  it("Lend Key", async () => {
+    // Not Implemented yet
+    const tx = await instance.lendKey(pubk, lock_id, 15);
+    assert.equal(tx.receipt.status, true, "");
 
   });
 
-  it("should create new PadlockToken", async () => {
-    const  tx= await instance.createToken(1111);
-
-    assert.equal(tx.receipt.status, true, "transcation should run through");
- 
-  });
-
-  it("should have correct values", async () => {
-    assert.equal(true,true)
-  });
 });
