@@ -40,9 +40,9 @@ const App = {
     
 
     // ! TODO: Use Correct Function with Id and PubKey
-    const { registerLockContractFunction } = this.padLock.methods;
+    const { registerKey } = this.padLock.methods;
 
-    const status = await registerLockContractFunction(generated_id,pubk).call();
+    const status = await registerKey(generated_id,pubk).call();
     if (status) {
       alert("Lock registerd")
     } else {
