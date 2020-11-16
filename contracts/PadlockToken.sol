@@ -11,9 +11,9 @@ contract PadlockToken {
         string meta;
     }
     
-    mapping(uint256 => string) public _ownerTable;
+    mapping(string => string) public _ownerTable;
 
-    constructor() public {}
+    constructor() {}
 
     function name() public pure returns (string memory) {
         return "PadlockToken";
@@ -23,21 +23,34 @@ contract PadlockToken {
         return "Padlock";
     }
 
-    // function registerKey(string public_key) public returns (bool){
+    function registerKey(string memory owner_public_key, string memory lock_id) public returns (bool){
 
-    //     //_ownerTable[lock_id]=public_key;
+        _ownerTable[lock_id] = owner_public_key;
 
-    //     return true;
-    // }
+        // !TODO: Check if lock_id is in owner Table
+        // string memory x =_ownerTable[lock_id] ;
+        // require(x != owner_public_key, "Couldn't register id.");
 
-    function getOwnerKey(string memory lock_id) public pure returns (string memory) {
-        return lock_id;
+        return true;
     }
 
-    function transferKey(uint256 lock_id, address owner) public returns (bool) {
+    function getOwnerKey(string memory lock_id) public view returns (string memory) {
+        return _ownerTable[lock_id];
     }
 
-    function lendKey(uint256 lock_id, address owner) public returns (bool) {
+    function transferKey(string memory pub_key_new_owner, string memory lock_id) public returns (bool) {
+
+        //TODO: Check that only correct owner can invoke this methode
+        //!!!msg.sender != pub_key 
+        
+        _ownerTable[lock_id]=pub_key_new_owner;
+
+        return true;
+    }
+
+    function lendKey(string memory pub_key_new_owner, string memory lock_id, int lend_time_in_min) public pure returns (bool) {
+        //Do it Later
+        return true;
     }
 
 
