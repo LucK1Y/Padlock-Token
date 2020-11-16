@@ -1,5 +1,4 @@
-pragma solidity ^0.7.2;
-pragma experimental ABIEncoderV2;
+pragma solidity ^0.7.0;
 
 
 
@@ -24,19 +23,45 @@ contract PadlockToken {
         return "Padlock";
     }
 
-    function createToken(uint256 lock_id, address owner) public returns (bool) {
-    }
-
-
     function registerKey(string public_key) public returns (bool){
-        // TODO: check if msg.sender == lock owner  
-
-
 
         _ownerTable[lock_id]=public_key;
 
         return true;
     }
+
+    function getOwnerKey(uint256 lock_id) public returns (string) {
+        return "Helllo World";
+    }
+
+    function transferKey(uint256 lock_id, address owner) public returns (bool) {
+    }
+
+    function lendKey(uint256 lock_id, address owner) public returns (bool) {
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // // mapping(uint256 => Lock) private _locks;
     // uint256 private _lockCount;
