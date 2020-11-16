@@ -23,15 +23,15 @@ contract PadlockToken {
         return "Padlock";
     }
 
-    function registerKey(string public_key) public returns (bool){
+    // function registerKey(string public_key) public returns (bool){
 
-        _ownerTable[lock_id]=public_key;
+    //     //_ownerTable[lock_id]=public_key;
 
-        return true;
-    }
+    //     return true;
+    // }
 
-    function getOwnerKey(uint256 lock_id) public returns (string) {
-        return "Helllo World";
+    function getOwnerKey(string memory lock_id) public pure returns (string memory) {
+        return lock_id;
     }
 
     function transferKey(uint256 lock_id, address owner) public returns (bool) {
