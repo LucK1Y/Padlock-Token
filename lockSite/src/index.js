@@ -1,4 +1,4 @@
-import openpgp  from "openpgp";
+import * as openpgp from 'openpgp';
 import Web3 from "web3";
 import padLockTokenArtifact from "../../build/contracts/padLockToken.json";
 
