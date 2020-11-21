@@ -34,15 +34,12 @@ const App = {
 
 
   registerLock: async function () {
-    console.log("start regitering lock for ",generated_id)
+    console.log("start regitering lock for ", generated_id)
 
-    const pubk=document.getElementById("pubK_input").innerHTML
-    
-
-    // ! TODO: Use Correct Function with Id and PubKey
+    const pubk = document.getElementById("pubK_input").innerHTML
     const { registerKey } = this.padLock.methods;
 
-    const status = await registerKey(generated_id,pubk).call();
+    const status = await registerKey(generated_id, pubk).call();
     if (status) {
       alert("Lock registerd")
     } else {
@@ -101,6 +98,7 @@ window.addEventListener("load", function () {
   App.start();
 
   generateID();
+  loadForm();
 });
 
 
@@ -116,4 +114,13 @@ function generateID() {
   }
 
   document.getElementById(name_id_field).innerHTML = generated_id
+}
+
+
+function loadForm() {
+  const registerform = document.getElementById("RegisterForm");
+
+  registerform.addEventListener('submit', function (event) {
+    event.preventDefault();
+  });
 }
