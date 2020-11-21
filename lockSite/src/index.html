@@ -14,6 +14,11 @@
         <input type="text" onsubmit="" id="registerLock_id_f">id Lock
         <button type="submit">Submit</button>
     </form>
+
+    <form id="unlockForm" hidden onsubmit="Lock.verfiyOwner(document.getElementById('unlock_id_f').innerText)">
+        <input type="text" onsubmit="" id="unlock_id_f">TimeStamp with signature
+        <button type="submit">Submit</button>
+    </form>
 </body>
 
 </html>

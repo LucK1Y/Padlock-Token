@@ -1,12 +1,15 @@
+import openpgp  from "openpgp";
 import Web3 from "web3";
-import padlockTokenArtifact from "../../build/contracts/PadlockToken.json";
+import padLockTokenArtifact from "../../build/contracts/padLockToken.json";
 
 const dom_id_register_form = "registerForm";
+const dom_id_unlock_form = "unlockForm";
+
 
 const App = {
   web3: null,
   account: null,
-  padlock: null,
+  padLock: null,
 
   start: async function () {
     const { web3 } = this;
@@ -14,9 +17,9 @@ const App = {
     try {
       // get contract instance
       const networkId = await web3.eth.net.getId();
-      const deployedNetwork = padlockTokenArtifact.networks[networkId];
-      this.padlock = new web3.eth.Contract(
-        padlockTokenArtifact.abi,
+      const deployedNetwork = padLockTokenArtifact.networks[networkId];
+      this.padLock = new web3.eth.Contract(
+        padLockTokenArtifact.abi,
         deployedNetwork.address
       );
 
@@ -27,6 +30,14 @@ const App = {
     } catch (error) {
       console.error("Could not connect to contract or chain.");
     }
+  },
+  getPubk: async function () {
+
+    const { getOwnerKey } = this.padLock.methods;
+
+    const pubk = await getOwnerKey(Lock.id);
+
+    return pubk;
   }
 };
 
@@ -43,26 +54,64 @@ const Lock = {
     }
 
     document.getElementById(dom_id_register_form).hidden = true;
+    document.getElementById(dom_id_unlock_form).hidden = false;
   },
 
   getRegistered: function getRegistered() {
     return Lock.id != "";
   },
 
-  buildRegister: function buildRegister(id_dom) {
+  buildForms: function () {
     if (!this.getRegistered()) {
       console.log("Lock has no id yet!");
 
-      var registerform = document.getElementById(id_dom);
+      var registerform = document.getElementById(dom_id_register_form);
       registerform.hidden = false;
 
       // https://stackoverflow.com/questions/19454310/stop-form-refreshing-page-on-submit
       function handleForm(event) { event.preventDefault(); }
       registerform.addEventListener('submit', handleForm);
+
     } else {
+
       console.log("Lock has already an id!");
+      var unlockform = document.getElementById(dom_id_unlock_form);
+      unlockform.hidden = false;
+
+      function handleForm(event) { event.preventDefault(); }
+      unlockform.addEventListener('submit', handleForm);
     }
+  },
+  opgp_verifySignature: async function (cleartext, pubk) {
+
+    const verified = await openpgp.verify({
+      message: await openpgp.cleartext.readArmored(cleartext),           // parse armored message
+      publicKeys: (await openpgp.key.readArmored(pubk)).keys // for verification
+    });
+    const { valid } = verified.signatures[0];
+    if (valid) {
+      console.log('signed by key id ' + verified.signatures[0].keyid.toHex());
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  verfiyOwner: async function (cleartext_timestamp) {
+    const pubk = await App.getPubk();
+
+    const status = await this.opgp_verifySignature(cleartext_timestamp, pubk);
+
+    if (status) {
+      alert("signature verifyied! Welcome")
+    } else {
+      alert("Signature can not be verified!")
+    }
+
+    // TODO Verify TimeStamp
+
   }
+
 };
 window.App = App;
 window.Lock = Lock;
@@ -83,5 +132,5 @@ window.addEventListener("load", function () {
   }
 
   App.start();
-  Lock.buildRegister(dom_id_register_form);
+  Lock.buildForms();
 });
