@@ -46,15 +46,24 @@ const Lock = {
   locked: true,
 
   registerLock: function registerLock(id) {
-    if (id == "") {
-      Lock.id = id;
-      alert("Id in Lock Succesful registered!")
-    } else {
-      alert("Cannot register id. Lock has already id");
-    }
+    if (Lock.id == "") {
+      if(id == "") {
+        document.getElementById("hasId").innerText = '"' +  id + '"' + " is an invalid id.\nPlease enter a valid id";
+      } else {
+        Lock.id = id;
+        alert("Succesful registered Id for Lock!")
+        document.getElementById("hasId").hidden = true;
+        document.getElementById(dom_id_register_form).hidden = true;
+        document.getElementById(dom_id_unlock_form).hidden = false;
 
-    document.getElementById(dom_id_register_form).hidden = true;
-    document.getElementById(dom_id_unlock_form).hidden = false;
+        return;
+      }     
+    } else {
+      alert("Cannot register id. Lock already has id");
+
+      document.getElementById(dom_id_register_form).hidden = true;
+      document.getElementById(dom_id_unlock_form).hidden = false;
+    }  
   },
 
   getRegistered: function getRegistered() {

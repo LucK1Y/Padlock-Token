@@ -7,11 +7,10 @@
 </head>
 
 <body>
-    <p>test</p>
-    
+    <p id="hasId" visibility="hidden">Please register ID</p>
 
     <form id="registerForm" hidden onsubmit="Lock.registerLock(document.getElementById('registerLock_id_f').innerText)">
-        <input type="text" onsubmit="" id="registerLock_id_f">id Lock
+        Lock id: <input type="text" onsubmit="" id="registerLock_id_f">
         <button type="submit">Submit</button>
     </form>
 
