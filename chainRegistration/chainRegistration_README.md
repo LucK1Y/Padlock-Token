@@ -10,3 +10,6 @@
 
 # Design Decisions
 - Webpack server, for simple transportation of page
+
+# Open
+- Go to http://localhost:8080/
