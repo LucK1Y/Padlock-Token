@@ -41,9 +41,9 @@ const App = {
 
     const status = await registerKey(generated_id, pubk).call();
     if (status) {
-      alert("Lock registerd")
+      alert("Lock registered")
     } else {
-      alert("Error when Registering")
+      alert("Id is already in use.\nReload page and try anew")
     }
   }
 
