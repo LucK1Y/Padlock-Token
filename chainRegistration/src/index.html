@@ -5,13 +5,16 @@
     <title>Chain Registration</title>
 
     <style>
-        input,textarea  {
+        input,
+        textarea {
             width: 100%;
         }
+
         form {
             width: 300px;
         }
-        #id_field{
+
+        #id_field {
             color: blue;
         }
     </style>
@@ -21,11 +24,11 @@
     <section>
         <h1>Register Lock</h1>
         Id: <p id="id_field"></p>
-        <form onsubmit="App.registerLock()">
+        <form onsubmit="App.registerLock()" id="RegisterForm">
             PublicKey Owner: <textarea required id="pubK_input"></textarea>
 
             <button type="submit">Schloss Registrieren</button>
-            
+
         </form>
     </section>
 
