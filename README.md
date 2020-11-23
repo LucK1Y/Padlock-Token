@@ -29,5 +29,10 @@
 
 ### Instructions
 
-[Connect to frontend in browser](#connect-to-frontend-in-browser) on how to use
-the frontend.
+1. On http://localhost:8080/ paste your public key and submit.
+2. When you get a successfully registered id, copy the random string above the public key field.
+3. On http://localhost:4000/ paste the copied id and submit.
+
+Now the key is registered with the publik key as owner. 
+To unlock the lock, enter a signed message on http://localhost:4000/ and submit.
+To lock the key, press lock.
