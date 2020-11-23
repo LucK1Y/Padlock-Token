@@ -26,15 +26,15 @@ const App = {
       const accounts = await web3.eth.getAccounts();
       this.account = accounts[0];
 
-        // logging ?? Not working
+      console.log("Using account ",this.account)
+
+      // logging ?? Not working
       this.padLock.events.RegisterKeyEvent(console.log)
 
     } catch (error) {
-      console.error("Could not connect to contract or chain.");
+      console.error("Could not connect to contract or chain.", error);
     }
   },
-
-
 
   registerLock: async function () {
     console.log("start regitering lock for ", generated_id)
@@ -42,8 +42,8 @@ const App = {
     const pubk = document.getElementById("pubK_input").value
     const { registerKey } = this.padLock.methods;
 
-    const status = await registerKey(generated_id, pubk).call();
-    if (status) {
+    const tx = await registerKey(generated_id, pubk).send({ from: this.account });
+    if (tx.status) {
       alert("Lock registered")
     } else {
       alert("Id is already in use.\nReload page and try anew")

@@ -13,3 +13,6 @@
 
 # Open
 - Go to http://localhost:8080/
+
+# Errors
+- adress not on account: Hard code correct account number, double check correct account (working with same as contract send from (see npm run migrate - listed adress))
