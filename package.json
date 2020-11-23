@@ -11,7 +11,8 @@
     "migrate": "truffle migrate",
     "test": "truffle test",
     "dev": "truffle develop",
-    "lockSite": "cd lockSite  && webpack-dev-server --port 4000"
+    "lockSite": "cd lockSite  && webpack-dev-server --port 4000",
+    "chainsite": "cd chainRegistration && webpack-dev-server"
   },
   "repository": {
     "type": "git",
