@@ -42,7 +42,7 @@ const App = {
     const pubk = document.getElementById("pubK_input").value
     const { registerKey } = this.padLock.methods;
 
-    const tx = await registerKey(generated_id, pubk).send({ from: this.account });
+    const tx = await registerKey(pubk,generated_id).send({ from: this.account });
     if (tx.status) {
       alert("Lock registered")
     } else {

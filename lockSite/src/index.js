@@ -27,9 +27,10 @@ const App = {
       const accounts = await web3.eth.getAccounts();
       this.account = accounts[0];
 
+      this.padLock.events.RegisterKeyEvent(console.log)
 
     } catch (error) {
-      console.error("Could not connect to contract or chain.");
+      console.error("Could not connect to contract or chain.",error);
     }
   },
   getPubk: async function () {
@@ -71,6 +72,9 @@ const Lock = {
     return Lock.id != "";
   },
 
+  // https://stackoverflow.com/questions/19454310/stop-form-refreshing-page-on-submit
+  handleForm: function (event) { event.preventDefault(); },
+
   buildForms: function () {
     if (!this.getRegistered()) {
       console.log("Lock has no id yet!");
@@ -78,9 +82,9 @@ const Lock = {
       var registerform = document.getElementById(dom_id_register_form);
       registerform.hidden = false;
 
-      // https://stackoverflow.com/questions/19454310/stop-form-refreshing-page-on-submit
-      function handleForm(event) { event.preventDefault(); }
-      registerform.addEventListener('submit', handleForm);
+      
+      registerform.addEventListener('submit', this.handleForm);
+      document.getElementById(dom_id_unlock_form).addEventListener('submit', this.handleForm);
 
     } else {
 
@@ -88,8 +92,8 @@ const Lock = {
       var unlockform = document.getElementById(dom_id_unlock_form);
       unlockform.hidden = false;
 
-      function handleForm(event) { event.preventDefault(); }
-      unlockform.addEventListener('submit', handleForm);
+      unlockform.addEventListener('submit', this.handleForm);
+      document.getElementById(dom_id_register_form).addEventListener('submit', this.handleForm);
     }
   },
   opgp_verifySignature: async function (cleartext, pubk) {
@@ -137,10 +141,11 @@ window.addEventListener("load", function () {
     console.warn(
       "No web3 detected. Falling back to http://127.0.0.1:7545. You should remove this fallback when you deploy live"
     );
+    console.error("cannot start metamask thingy")
     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-    App.web3 = new Web3(
-      new Web3.providers.HttpProvider("http://127.0.0.1:7545")
-    );
+    // App.web3 = new Web3(
+    //   new Web3.providers.HttpProvider("http://127.0.0.1:7545")
+    // );
   }
 
   App.start();
