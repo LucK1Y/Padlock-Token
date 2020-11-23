@@ -9,12 +9,12 @@
 <body>
     <p id="hasId" visibility="hidden">Please register ID</p>
 
-    <form id="registerForm" hidden onsubmit="Lock.registerLock(document.getElementById('registerLock_id_f').innerText)">
+    <form id="registerForm" hidden onsubmit="Lock.registerLock(document.getElementById('registerLock_id_f').value)">
         Lock id: <input type="text" onsubmit="" id="registerLock_id_f">
         <button type="submit">Submit</button>
     </form>
 
-    <form id="unlockForm" hidden onsubmit="Lock.verfiyOwner(document.getElementById('unlock_id_f').innerText)">
+    <form id="unlockForm" hidden onsubmit="Lock.verfiyOwner(document.getElementById('unlock_id_f').value)">
         <input type="text" onsubmit="" id="unlock_id_f">TimeStamp with signature
         <button type="submit">Submit</button>
     </form>

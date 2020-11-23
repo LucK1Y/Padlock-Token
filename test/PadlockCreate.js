@@ -23,8 +23,14 @@ contract("PadlockToken", (accounts) => {
   });
 
   it("Get Owner Key", async () => {
+
+    assert.equal(pubk,await instance._ownerTable(lock_id));
+
     const shall_pubk = await instance.getOwnerKey(lock_id);
     assert.equal(shall_pubk, pubk, "Returns successfully");
+
+    // const shall_not_pubK=await instance.getOwnerKey("test_id");
+
   });
   it("Transfer Key", async () => {
     // Not Implemented yet

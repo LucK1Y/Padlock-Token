@@ -27,6 +27,7 @@ const App = {
       const accounts = await web3.eth.getAccounts();
       this.account = accounts[0];
 
+
     } catch (error) {
       console.error("Could not connect to contract or chain.");
     }
@@ -35,7 +36,7 @@ const App = {
 
     const { getOwnerKey } = this.padLock.methods;
 
-    const pubk = await getOwnerKey(Lock.id);
+    const pubk = await getOwnerKey(Lock.id).call();
 
     return pubk;
   }
@@ -107,8 +108,10 @@ const Lock = {
   },
 
   verfiyOwner: async function (cleartext_timestamp) {
+    console.log(cleartext_timestamp,Lock.id)
     const pubk = await App.getPubk();
 
+    console.log("PubK: ",pubk)
     const status = await this.opgp_verifySignature(cleartext_timestamp, pubk);
 
     if (status) {
@@ -142,4 +145,7 @@ window.addEventListener("load", function () {
 
   App.start();
   Lock.buildForms();
+
+
+
 });

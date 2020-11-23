@@ -26,6 +26,9 @@ const App = {
       const accounts = await web3.eth.getAccounts();
       this.account = accounts[0];
 
+        // logging ?? Not working
+      this.padLock.events.RegisterKeyEvent(console.log)
+
     } catch (error) {
       console.error("Could not connect to contract or chain.");
     }
@@ -36,7 +39,7 @@ const App = {
   registerLock: async function () {
     console.log("start regitering lock for ", generated_id)
 
-    const pubk = document.getElementById("pubK_input").innerHTML
+    const pubk = document.getElementById("pubK_input").value
     const { registerKey } = this.padLock.methods;
 
     const status = await registerKey(generated_id, pubk).call();
@@ -91,9 +94,9 @@ window.addEventListener("load", function () {
       "No web3 detected. Falling back to http://127.0.0.1:7545. You should remove this fallback when you deploy live"
     );
     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-    App.web3 = new Web3(
-      new Web3.providers.HttpProvider("http://127.0.0.1:7545")
-    );
+    // App.web3 = new Web3(
+    //   new Web3.providers.HttpProvider("http://127.0.0.1:7545")
+    // );
   }
   App.start();
 
@@ -101,13 +104,19 @@ window.addEventListener("load", function () {
   loadForm();
 });
 
+function getRndInteger(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
 function generateID() {
 
   generated_id = ""
 
   for (let i = 0; i < 64; i++) {
-    let n = parseInt(Math.random() * 255) // generate Random Asci Number
+    let n = 0;
+    while (n == 0 || n == 34 || n == 39) {
+      n = getRndInteger(33, 126);
+    }
 
     generated_id += String.fromCharCode(n);
 
