@@ -2,8 +2,22 @@
 <html>
 
 <head>
-    <title></title>
+    <title>Locksite</title>
     <script type="text/javascript" src="index.js"></script>
+
+    <style>
+        img {
+            width: 800px;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -15,9 +29,24 @@
     </form>
 
     <form id="unlockForm" hidden onsubmit="Lock.verfiyOwner(document.getElementById('unlock_id_f').value)">
-        <input type="text" onsubmit="" id="unlock_id_f">TimeStamp with signature
+        <textarea id="unlock_id_f" placeholder="TimeStamp with signature"></textarea>
         <button type="submit">Submit</button>
     </form>
+
+    <div id="unlocked_indication">
+        <div class="polaroid ">
+            <img src="./public/castle-1290860_1920.jpg" alt="unlocked lock" , sizes="">
+        </div>
+        <div style=" text-align: center;">
+            <h1 >Unlocked !</h1>
+            <button>Lock</button>
+        </div>
+        
+
+        
+    </div>
+
+
 </body>
 
 </html>

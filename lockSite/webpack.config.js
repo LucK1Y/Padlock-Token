@@ -9,7 +9,9 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
     },
     plugins: [
-        new CopyWebpackPlugin([{ from: "./src/index.html", to: "index.html" }]),
+        new CopyWebpackPlugin([
+            { from: "./src/index.html", to: "index.html" },
+            { from: "./src/castle-1290860_1920.jpg", to: "public" }]),
     ],
     devServer: { contentBase: path.join(__dirname, "dist"), compress: true },
 };

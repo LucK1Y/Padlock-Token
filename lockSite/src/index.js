@@ -4,7 +4,7 @@ import padLockTokenArtifact from "../../build/contracts/padLockToken.json";
 
 const dom_id_register_form = "registerForm";
 const dom_id_unlock_form = "unlockForm";
-
+const dom_unlocked="unlocked_indication";
 
 const App = {
   web3: null,
@@ -97,11 +97,17 @@ const Lock = {
     }
   },
   opgp_verifySignature: async function (cleartext, pubk) {
+    var verified;
+    try {
+      verified = await openpgp.verify({
+      
+        message: await openpgp.cleartext.readArmored(cleartext),           // parse armored message
+        publicKeys: (await openpgp.key.readArmored(pubk)).keys // for verification
+      });
+    } catch (error) {
+      alert(error);
+    }
 
-    const verified = await openpgp.verify({
-      message: await openpgp.cleartext.readArmored(cleartext),           // parse armored message
-      publicKeys: (await openpgp.key.readArmored(pubk)).keys // for verification
-    });
     const { valid } = verified.signatures[0];
     if (valid) {
       console.log('signed by key id ' + verified.signatures[0].keyid.toHex());
@@ -118,13 +124,17 @@ const Lock = {
     console.log("PubK: ",pubk)
     const status = await this.opgp_verifySignature(cleartext_timestamp, pubk);
 
-    if (status) {
-      alert("signature verifyied! Welcome")
-    } else {
+    if (!status) {
       alert("Signature can not be verified!")
+      return
     }
-
+    alert("signature verifyied! Welcome")
     // TODO Verify TimeStamp
+
+    // hide unlock form and show Unlock Indication
+    document.getElementById(dom_id_unlock_form).hidden=true;
+    document.getElementById(dom_unlocked).hidden=false;
+
 
   }
 
