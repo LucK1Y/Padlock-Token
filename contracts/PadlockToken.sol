@@ -10,6 +10,12 @@ contract PadlockToken {
         address owner;
         string meta;
     }
+
+
+    event RegisterKeyEvent(
+        string pubk,
+        string lock_id
+    );
     
     mapping(string => string) public _ownerTable;
 
@@ -27,14 +33,17 @@ contract PadlockToken {
 
         _ownerTable[lock_id] = owner_public_key;
 
-        // !TODO: Check if lock_id is in owner Table
-        // string memory x =_ownerTable[lock_id] ;
-        // require(x != owner_public_key, "Couldn't register id.");
+        require((bytes(_ownerTable[lock_id]).length != 0), "Couldn't register id.");
+
+
+        emit RegisterKeyEvent(owner_public_key,lock_id);
 
         return true;
     }
 
     function getOwnerKey(string memory lock_id) public view returns (string memory) {
+
+        require(bytes(_ownerTable[lock_id]).length != 0,"Could not find lock_id ");
         return _ownerTable[lock_id];
     }
 
