@@ -45,41 +45,30 @@ const App = {
     const tx = await registerKey(pubk,generated_id).send({ from: this.account });
     if (tx.status) {
       alert("Lock registered")
+
+      document.getElementById("lock_register").hidden=true;
+      document.getElementById("transfer_lock").hidden=false;
     } else {
       alert("Id is already in use.\nReload page and try anew")
     }
+  },
+
+  transferLock: async function () {
+    const pubk = document.getElementById("pubK_input").value 
+    const new_owner=document.getElementById("new_owner_adress").value
+
+    const { transferKey } = this.padLock.methods;
+
+    const tx=await transferKey(pubk,generated_id,new_owner).send({from:this.account})
+
+    if (tx.status) {
+      alert("Lock transfered")
+      location.reload()
+    } else {
+      alert("Cannot transfer ownership!")
+    }
   }
 
-  // refreshBalance: async function () {
-  //   const { balanceOf, decimals } = this.dhbw.methods;
-  //   const balance = await balanceOf(this.account).call();
-  //   const decimal = await decimals().call();
-
-  //   const balanceElement = document.getElementsByClassName("balance")[0];
-  //   balanceElement.innerHTML = `${balance / Math.pow(10, decimal)}.${(
-  //     balance % 100
-  //   )
-  //     .toString()
-  //     .padStart(2, "0")}`;
-  // },
-
-  // sendCoin: async function () {
-  //   const amount = parseInt(document.getElementById("amount").value);
-  //   const receiver = document.getElementById("receiver").value;
-
-  //   this.setStatus("Initiating transaction... (please wait)");
-
-  //   const { transfer } = this.dhbw.methods;
-  //   await transfer(receiver, amount * 100).send({ from: this.account });
-
-  //   this.setStatus("Transaction complete!");
-  //   this.refreshBalance();
-  // },
-
-  // setStatus: function (message) {
-  //   const status = document.getElementById("status");
-  //   status.innerHTML = message;
-  // },
 };
 
 window.App = App;
@@ -90,13 +79,7 @@ window.addEventListener("load", function () {
     App.web3 = new Web3(window.ethereum);
     window.ethereum.enable(); // get permission to access accounts
   } else {
-    console.warn(
-      "No web3 detected. Falling back to http://127.0.0.1:7545. You should remove this fallback when you deploy live"
-    );
-    // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-    // App.web3 = new Web3(
-    //   new Web3.providers.HttpProvider("http://127.0.0.1:7545")
-    // );
+    alert("cannot use metamask!")
   }
   App.start();
 
@@ -127,9 +110,18 @@ function generateID() {
 
 
 function loadForm() {
-  const registerform = document.getElementById("RegisterForm");
+  // deactivate page refreshing on all forms
+  const forms = document.getElementsByTagName("form");
 
-  registerform.addEventListener('submit', function (event) {
-    event.preventDefault();
-  });
+  for (const f in forms) {
+    if (forms.hasOwnProperty(f)) {
+      const element = forms[f];
+      
+      element.addEventListener('submit', function (event) {
+        event.preventDefault();
+      });
+    }
+  }
+
+
 }

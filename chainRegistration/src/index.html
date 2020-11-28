@@ -21,16 +21,33 @@
 </head>
 
 <body>
-    <section>
+    Id: <pre id="id_field"></pre>
+    <section id="lock_register">
         <h1>Register Lock</h1>
-        Id: <pre id="id_field"></pre>
-        <form onsubmit="App.registerLock()" id="RegisterForm">
+        <form onsubmit="App.registerLock()">
             PublicKey Owner: <textarea required id="pubK_input"></textarea>
 
             <button type="submit">Schloss Registrieren</button>
 
         </form>
     </section>
+
+    <div id="transfer_lock" hidden>
+        <section style="border: 1px groove black; margin: 50px; align-content: center; padding: 20px;">
+        <h1>TransferKey</h1>
+
+        
+        <form onsubmit="App.transferLock()" id="RegisterForm">
+            Wallet adress new Owner: <input type="text" id="new_owner_adress" placeholder="etherium adress">
+            PublicKey New Owner: <textarea required id="pubK_input"></textarea>
+
+            <button type="submit">Schloss Übertragen</button>
+
+        </form>
+    </section>
+
+        <button onclick="location.reload(true)">Register new Lock</button>
+    </div>
 
     <script src="index.js"></script>
 </body>
