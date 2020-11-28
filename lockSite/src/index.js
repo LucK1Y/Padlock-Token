@@ -10,6 +10,7 @@ const App = {
   web3: null,
   account: null,
   padLock: null,
+  locked: false,
 
   start: async function () {
     const { web3 } = this;
@@ -57,6 +58,7 @@ const Lock = {
         document.getElementById("hasId").hidden = true;
         document.getElementById(dom_id_register_form).hidden = true;
         document.getElementById(dom_id_unlock_form).hidden = false;
+        document.getElementById("lock_image").src = "./public/closed_lock.png";
 
         return;
       }     
@@ -133,12 +135,20 @@ const Lock = {
       return
     }
     alert("signature verifyied! Welcome")
-    
+
     // hide unlock form and show Unlock Indication
     document.getElementById(dom_id_unlock_form).hidden=true;
     document.getElementById(dom_unlocked).hidden=false;
 
 
+  },
+
+  getRegistered: function getRegistered() {
+    return Lock.id != "";
+  },
+
+  getRegistered: function getRegistered() {
+    return Lock.id != "";
   }
 
 };

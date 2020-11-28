@@ -11,7 +11,8 @@ module.exports = {
     plugins: [
         new CopyWebpackPlugin([
             { from: "./src/index.html", to: "index.html" },
-            { from: "./src/castle-1290860_1920.jpg", to: "public" }]),
+            { from: "./src/castle-1290860_1920.jpg", to: "public" },
+            { from: "./src/closed_lock.png", to: "public" }]),
     ],
     devServer: { contentBase: path.join(__dirname, "dist"), compress: true },
 };
