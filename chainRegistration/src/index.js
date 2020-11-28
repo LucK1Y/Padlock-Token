@@ -97,7 +97,8 @@ function generateID() {
 
   for (let i = 0; i < 64; i++) {
     let n = 0;
-    while (n == 0 || n == 34 || n == 39) {
+    // exlude chars
+    while (n == 0 || n == 34 || n == 39 || n== 47 || n==60 || n==62 || n==92) {
       n = getRndInteger(33, 126);
     }
 
