@@ -56,10 +56,11 @@ const App = {
   transferLock: async function () {
     const pubk = document.getElementById("pubK_input").value 
     const new_owner=document.getElementById("new_owner_adress").value
+    const lock_id=document.getElementById("lock_id_register").value
 
     const { transferKey } = this.padLock.methods;
 
-    const tx=await transferKey(pubk,generated_id,new_owner).send({from:this.account})
+    const tx=await transferKey(pubk,lock_id,new_owner).send({from:this.account})
 
     if (tx.status) {
       alert("Lock transfered")
