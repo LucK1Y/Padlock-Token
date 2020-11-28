@@ -20,7 +20,7 @@
 2. Run `npm i`. 
 3. Run `npm run locksite`.
 4. Open a terminal in the project folder.
-5. Run `npm run locksite` in the second terminal.
+5. Run `npm run chainsite` in the second terminal.
 
 ### Connect to frontend in browser
 
