@@ -37,7 +37,7 @@ const App = {
   },
 
   registerLock: async function () {
-    console.log("start regitering lock for ", generated_id)
+    console.log("start registering lock for ", generated_id)
 
     const pubk = document.getElementById("pubK_input").value
     const { registerKey } = this.padLock.methods;

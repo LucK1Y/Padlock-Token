@@ -110,6 +110,10 @@ const Lock = {
 
     const { valid } = verified.signatures[0];
     if (valid) {
+      // check timestamp
+      if(verified.message < Date.now() + 30 * 1000 || verified.message > Date.now() + 30 * 1000) {
+        return false;
+      }
       console.log('signed by key id ' + verified.signatures[0].keyid.toHex());
       return true;
     } else {
