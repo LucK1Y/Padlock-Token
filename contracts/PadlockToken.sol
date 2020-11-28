@@ -5,10 +5,8 @@ pragma solidity ^0.7.0;
 
 contract PadlockToken {
     struct Lock {
-        string text;
-        uint256 id;
+        string pubk;
         address owner;
-        string meta;
     }
 
 
@@ -17,7 +15,7 @@ contract PadlockToken {
         string lock_id
     );
     
-    mapping(string => string) public _ownerTable;
+    mapping(string => Lock) public _ownerTable;
 
     constructor() {}
 
@@ -31,10 +29,9 @@ contract PadlockToken {
 
     function registerKey(string memory owner_public_key, string memory lock_id) public returns (bool){
 
-        _ownerTable[lock_id] = owner_public_key;
+        _ownerTable[lock_id] = Lock(owner_public_key,msg.sender);
 
-        require((bytes(_ownerTable[lock_id]).length != 0), "Couldn't register id.");
-
+        require((bytes(_ownerTable[lock_id].pubk).length != 0), "Couldn't register id.");
 
         emit RegisterKeyEvent(owner_public_key,lock_id);
 
@@ -43,16 +40,19 @@ contract PadlockToken {
 
     function getOwnerKey(string memory lock_id) public view returns (string memory) {
 
-        require(bytes(_ownerTable[lock_id]).length != 0,"Could not find lock_id ");
-        return _ownerTable[lock_id];
+        string memory pubk=_ownerTable[lock_id].pubk;
+
+        require(bytes(pubk).length != 0,"Could not find lock_id ");
+        return pubk;
     }
 
-    function transferKey(string memory pub_key_new_owner, string memory lock_id) public returns (bool) {
+    function transferKey(string memory pub_key_new_owner, string memory lock_id, address new_owner) public returns (bool) {
 
-        //TODO: Check that only correct owner can invoke this methode
-        //!!!msg.sender != pub_key 
-        
-        _ownerTable[lock_id]=pub_key_new_owner;
+        // check that old owner calls transfer        
+        require(msg.sender==_ownerTable[lock_id].owner,"You are not authorised for that action.");
+
+        // register new Owner on lock
+        _ownerTable[lock_id]=Lock(pub_key_new_owner,new_owner);
 
         return true;
     }
