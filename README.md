@@ -36,3 +36,11 @@
 Now the key is registered with the publik key as owner. 
 To unlock the lock, enter a signed message on http://localhost:4000/ and submit.
 To lock the key, press lock.
+
+### Create a signed message
+1. Open a terminal in the project folder.
+2. Run `npm run cli`
+3. Follow the termin instructions:  
+    - Enter the complete path to the private key file. It probably can be found in the user space in the directory *.gnupg/*  
+    - Enter the passphrase for the key pair
+4. The singed message will be printed out in the console. From there it can be copied.
