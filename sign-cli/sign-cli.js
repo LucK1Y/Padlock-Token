@@ -17,12 +17,13 @@ read_line.question("please insert the complete path to your opgp private key: \n
         exit(1)
     }
 
-    fs.readFile(path, function (err, data) {
+    fs.readFile(path, "utf8" ,function (err, data) {
         if (err) {
             console.log(err);
             exit(1)
         }
         privateKeyRaw = data;
+        console.log(data)
 
 
         read_line.question("Please insert your private passphrase: \t", function (passphrase) {
