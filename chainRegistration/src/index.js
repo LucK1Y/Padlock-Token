@@ -56,10 +56,11 @@ const App = {
   transferLock: async function () {
     const pubk = document.getElementById("pubK_input").value 
     const new_owner=document.getElementById("new_owner_adress").value
+    const lock_id=document.getElementById("lock_id_register").value
 
     const { transferKey } = this.padLock.methods;
 
-    const tx=await transferKey(pubk,generated_id,new_owner).send({from:this.account})
+    const tx=await transferKey(pubk,lock_id,new_owner).send({from:this.account})
 
     if (tx.status) {
       alert("Lock transfered")
@@ -97,7 +98,8 @@ function generateID() {
 
   for (let i = 0; i < 64; i++) {
     let n = 0;
-    while (n == 0 || n == 34 || n == 39) {
+    // exlude chars
+    while (n == 0 || n == 34 || n == 39 || n== 47 || n==60 || n==62 || n==92) {
       n = getRndInteger(33, 126);
     }
 

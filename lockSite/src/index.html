@@ -28,14 +28,14 @@
         <button type="submit">Submit</button>
     </form>
 
-    <form id="unlockForm" hidden onsubmit="Lock.verfiyOwner(document.getElementById('unlock_id_f').value)">
+    <form id="unlockForm" hidden onsubmit="Lock.verifyOwner(document.getElementById('unlock_id_f').value)">
         <textarea id="unlock_id_f" placeholder="TimeStamp with signature"></textarea>
         <button type="submit">Submit</button>
     </form>
 
     <div id="unlocked_indication">
         <div class="polaroid ">
-            <img src="./public/castle-1290860_1920.jpg" alt="unlocked lock" , sizes="">
+            <img src="./public/castle-1290860_1920.jpg" alt="unlocked lock" , sizes="" id="lock_image">
         </div>
         <div style=" text-align: center;">
             <h1 >Unlocked !</h1>

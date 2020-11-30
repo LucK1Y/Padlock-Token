@@ -10,6 +10,7 @@ const App = {
   web3: null,
   account: null,
   padLock: null,
+  locked: false,
 
   start: async function () {
     const { web3 } = this;
@@ -57,6 +58,7 @@ const Lock = {
         document.getElementById("hasId").hidden = true;
         document.getElementById(dom_id_register_form).hidden = true;
         document.getElementById(dom_id_unlock_form).hidden = false;
+        document.getElementById("lock_image").src = "./public/closed_lock.png";
 
         return;
       }     
@@ -110,7 +112,7 @@ const Lock = {
 
     const { valid } = verified.signatures[0];
     if (valid) {
-      // check timestamp
+      // check timestamp (is in ms)
       if(verified.message < Date.now() + 30 * 1000 || verified.message > Date.now() + 30 * 1000) {
         return false;
       }
@@ -121,7 +123,7 @@ const Lock = {
     }
   },
 
-  verfiyOwner: async function (cleartext_timestamp) {
+  verifyOwner: async function (cleartext_timestamp) {
     console.log(cleartext_timestamp,Lock.id)
     const pubk = await App.getPubk();
 
@@ -133,13 +135,20 @@ const Lock = {
       return
     }
     alert("signature verifyied! Welcome")
-    // TODO Verify TimeStamp
 
     // hide unlock form and show Unlock Indication
     document.getElementById(dom_id_unlock_form).hidden=true;
     document.getElementById(dom_unlocked).hidden=false;
 
 
+  },
+
+  getRegistered: function getRegistered() {
+    return Lock.id != "";
+  },
+
+  getRegistered: function getRegistered() {
+    return Lock.id != "";
   }
 
 };
