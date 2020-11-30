@@ -7,6 +7,9 @@ contract PadlockToken {
     struct Lock {
         string pubk;
         address owner;
+
+        string tempPubk;
+        uint256 expDate;
     }
 
 
@@ -29,7 +32,7 @@ contract PadlockToken {
 
     function registerKey(string memory owner_public_key, string memory lock_id) public returns (bool){
 
-        _ownerTable[lock_id] = Lock(owner_public_key,msg.sender);
+        _ownerTable[lock_id] = Lock(owner_public_key,msg.sender,"",0);
 
         require((bytes(_ownerTable[lock_id].pubk).length != 0), "Couldn't register id.");
 
@@ -52,16 +55,38 @@ contract PadlockToken {
         require(msg.sender==_ownerTable[lock_id].owner,"You are not authorised for that action.");
 
         // register new Owner on lock
-        _ownerTable[lock_id]=Lock(pub_key_new_owner,new_owner);
+        _ownerTable[lock_id]=Lock(pub_key_new_owner,new_owner,"",0);
 
         return true;
     }
 
-    function lendKey(string memory pub_key_new_owner, string memory lock_id, int lend_time_in_min) public pure returns (bool) {
-        //Do it Later
+    function lendKey(string memory pub_key_temp_owner, string memory lock_id, uint256 expiration_date) public returns (bool) {
+        
+        // check that old owner calls transfer        
+        require(msg.sender==_ownerTable[lock_id].owner,"You are not authorised for that action.");
+
+        Lock memory lock=_ownerTable[lock_id];
+
+        require(bytes(lock.pubk).length != 0,"Could not find lock_id ");
+
+        _ownerTable[lock_id].tempPubk=pub_key_temp_owner;
+        _ownerTable[lock_id].expDate=expiration_date;
+
         return true;
     }
 
+    function getTemporaryKey(string memory lock_id,uint256 timeStamp_now) public view returns (string memory) {
+
+        Lock memory lock=_ownerTable[lock_id];
+        
+        // lock exists and temporary owner registered
+        require(bytes(lock.tempPubk).length != 0,"Could not find lock_id ");
+
+        // Timestamp still valid
+        require(timeStamp_now<lock.expDate,"You are no longer authorised to use that lock.");
+
+        return lock.tempPubk;
+    }
 
 
 
