@@ -12,43 +12,67 @@
 
         form {
             width: 300px;
+            border: 1px groove black;
+            margin-left: 50px;
+            align-content: center;
+            padding: 20px;
         }
 
         #id_field {
             color: blue;
         }
+
+        summary {
+            margin-top: 50px;
+            font-size: 30px;
+            margin-left: 50px;
+            cursor: pointer;
+        }
+
+        p,
+        pre {
+            margin-left: 50px;
+        }
+
+        button {
+            margin: 20px;
+        }
     </style>
 </head>
 
 <body>
-    Id: <pre id="id_field"></pre>
-    <section id="lock_register">
-        <h1>Register Lock</h1>
+
+    <details id="lock_register" open>
+        <summary>Register Lock: </summary>
+
+        <p>ID:
+        <pre id="id_field"></pre>
+        </p>
         <form onsubmit="App.registerLock()">
             PublicKey Owner: <textarea required id="pubK_input"></textarea>
 
             <button type="submit">Schloss Registrieren</button>
 
+
+
         </form>
-    </section>
+        <button onclick="generateID()" style="margin-left: 50px;">Neue ID Generieren</button>
+    </details>
 
-    <div id="transfer_lock" hidden>
-        <section style="border: 1px groove black; margin: 50px; align-content: center; padding: 20px;">
-        <h1>TransferKey</h1>
+    <details id="transfer_lock">
+        <summary>Transfer Lock</summary>
 
-        
+
         <form onsubmit="App.transferLock()" id="RegisterForm">
             Wallet adress new Owner: <input type="text" id="new_owner_adress" placeholder="etherium adress">
             PublicKey New Owner: <textarea required id="pubK_input"></textarea>
-            Lock ID: <input type="text"  id="lock_id_register">
+            Lock ID: <input type="text" id="lock_id_register">
 
             <button type="submit">Schloss Übertragen</button>
 
         </form>
-    </section>
 
-        <button onclick="location.reload(true)">Register new Lock</button>
-    </div>
+    </details>
 
     <script src="index.js"></script>
 </body>
