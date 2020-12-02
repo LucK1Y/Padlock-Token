@@ -106,8 +106,8 @@ const Lock = {
       return false;
     }
     // check timestamp (is in ms) if still valid
-    if (verified.message < Date.now() + 30 * 1000 || verified.message > Date.now() + 30 * 1000) {
-      console.error("Unlock Message is to old!")
+    if (verified.data < Date.now() - 30 * 1000) {
+      alert("Unlock Message is to old!")
       return false;
     }
 
