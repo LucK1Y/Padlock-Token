@@ -37,13 +37,31 @@
         button {
             margin: 20px;
         }
+
+          div.scrollmenu {
+            margin-top: 100px;
+            background-color: #666;
+            overflow: auto;
+            white-space: nowrap;
+        }
+
+        div.scrollmenu a {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px;
+            text-decoration: none;
+        }
+
+        div.scrollmenu a:hover {
+            background-color: #888;
+        }
     </style>
 </head>
 
 <body>
-
     <details id="lock_register" open>
-        <summary>Register Lock: </summary>
+        <summary>Register Lock:</summary>
 
         <p>ID:
         <pre id="id_field"></pre>
@@ -52,7 +70,6 @@
             PublicKey Owner: <textarea required id="pubK_input"></textarea>
 
             <button type="submit">Schloss Registrieren</button>
-
 
 
         </form>
@@ -71,9 +88,15 @@
             <button type="submit">Schloss Übertragen</button>
 
         </form>
-
     </details>
+    
 
+    <footer>
+        <div class="scrollmenu">
+            <a href="https://github.com/LucK1Y/Padlock-Token">Project Page </a></a>
+            <a href="https://github.com/LucK1Y/Padlock-Token/blob/master/chainRegistration/chainRegistration_README.md">Help Page</a>
+        </div>
+    </footer>
     <script src="index.js"></script>
 </body>
 
