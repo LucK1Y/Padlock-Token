@@ -2,7 +2,7 @@
 # Padlock Token Project
 
 # Overview
-see the app [App - Readme](app/README.md) 
+see the app [App - Readme](app/README.md)<br>
 [Tutorial](https://youtu.be/4EiR-UCbqvY)
 
 # Important Notes
