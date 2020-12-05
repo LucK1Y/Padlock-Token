@@ -28,7 +28,7 @@ const App = {
 
       console.log("Using account ",this.account)
 
-      // logging ?? Not working
+      // logging
       this.padLock.events.RegisterKeyEvent(console.log)
 
     } catch (error) {
@@ -46,8 +46,8 @@ const App = {
     if (tx.status) {
       alert("Lock registered")
 
-      document.getElementById("lock_register").hidden=true;
-      document.getElementById("transfer_lock").hidden=false;
+      document.getElementById("pubK_input").value="Public Key was registered!"
+
     } else {
       alert("Id is already in use.\nReload page and try anew")
     }
@@ -73,6 +73,7 @@ const App = {
 };
 
 window.App = App;
+window.generateID=generateID;
 
 window.addEventListener("load", function () {
   if (window.ethereum) {
