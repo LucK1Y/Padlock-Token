@@ -1,8 +1,10 @@
+
 # Padlock Token Project
 
-## Installation instructions
+# Overview
+see the app [App - Readme](app/README.md) 
 
-### Contracts
+# Important Notes
 
 1. Install Python 3 and Node LTS on your system.
 2. Clone this repository.
@@ -44,3 +46,4 @@ To lock the key, press lock.
     - Enter the complete path to the private key file. It probably can be found in the user space in the directory *.gnupg/*  
     - Enter the passphrase for the key pair
 4. The singed message will be printed out in the console. From there it can be copied.
+

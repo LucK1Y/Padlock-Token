@@ -6,45 +6,84 @@ contract("PadlockToken", (accounts) => {
   const carol = accounts[2];
   const daniel = accounts[3];
 
+  const lock_id = "awdwadwadwadwadawdwa";
+  const pubk = "pubKadawdawd";
+
+  let newPadlock;
   let instance;
 
   beforeEach(async () => {
     instance = await PadlockToken.deployed();
   });
 
-  it("should keychain be empty", async () => {
-    assert.equal(await instance.keychain, "[]", "Keychain should be empty");
+  // alice will be lock owner !
+  it("Register Key", async () => {
+    const tx = await instance.registerKey(pubk, lock_id);
+
+    assert.equal(tx.receipt.status, true, "Returns status successfull");
   });
 
-  it("should create new PadlockToken", async () => {
-    const status = await instance.createToken();
-    
-    //tx.receipt.status
-    assert.equal(status, true, "should create new PadlockToken");
+  it("Get Owner Key", async () => {
+    const lock = await instance._ownerTable(lock_id)
+
+    assert.equal(pubk, lock.pubk, "Should save correct public key");
+
+    const shall_pubk = await instance.getOwnerKey(lock_id);
+    assert.equal(shall_pubk, pubk, "Returns correct pubkey");
+
+
+    // const shall_not_pubK=await instance.getOwnerKey("test_id");
+
+  });
+
+  it("Transfer Key", async () => {
+
+    // alice transfers lock to bob
+    const tx = await instance.transferKey(pubk, lock_id, bob);
+    assert.equal(tx.receipt.status, true, "Transfer lock to bob successfull");
+
+    // alice tries to transfer lock to herself, but is not owner
+    try {
+      const ftx = await instance.transferKey(pubk, lock_id, alice);
+    } catch (error) {
+      const error_msg_should = "Returned error: VM Exception while processing transaction: revert You are not authorised for that action. -- Reason given: You are not authorised for that action.."
+      assert.equal(error.message, error_msg_should, "Shoudl throw error as alice is not authorised");
+
+    }
+    const lock = await instance._ownerTable(lock_id);
+    assert.equal(bob, lock.owner, "Should show bob as new owner");
 
   });
 
 
-  it("should have correct values", async () => {
+  it("Lend Key", async () => {
+    /**
+     * Important: Bob owns lock and lends it to alice
+     */
 
-    const owner = await instance.owner(token);
-    assert.equal(owner,, "should return correct owner");
+
+    const tmpPubK = "otherPubk";
+    const timeStampExpiary = Date.now().toString()
+
+    const tx = await instance.lendKey(tmpPubK, lock_id, timeStampExpiary,{from:bob})
+    assert.equal(tx.receipt.status, true, "Shoudl register temporal key");
+
+    const lock = await instance._ownerTable(lock_id);
+    assert.equal(tmpPubK, lock.tempPubk, "Should save correct temporary public key");
+    assert.equal(timeStampExpiary, lock.expDate, "Should save correct timestamp for exirpation date");
+
+
+    const savedTmpKey = await instance.getTemporaryKey(lock_id, timeStampExpiary - 1)
+    assert.equal(tmpPubK, savedTmpKey, "Should return correct temporary public key");
+
+
+    try {
+      const savedTmpKey = await instance.getTemporaryKey(lock_id, timeStampExpiary + 1)
+    } catch (error) {
+      const error_msg_should = "Returned error: VM Exception while processing transaction: revert You are no longer authorised to use that lock."
+      assert.equal(error.message, error_msg_should, "Shoudl throw error as timestamp is run out");
+    }
 
   });
 
-  it("should correctly determine multiple winners", async () => {
-    await instance.vote("test", { from: daniel });
-    const winners = JSON.parse(await instance.getWinners());
-    assert.equal(winners.length, 2, "there should be 2 winners");
-    assert.notEqual(
-      winners.findIndex((value) => value === "test"),
-      -1,
-      "test should be a winner"
-    );
-    assert.notEqual(
-      winners.findIndex((value) => value === "test2"),
-      -1,
-      "test2 should be a winner"
-    );
-  });
 });
