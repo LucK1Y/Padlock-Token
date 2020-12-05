@@ -6,14 +6,16 @@ const dom_id_register_form = "registerForm";
 const dom_id_unlock_form = "unlockForm";
 const dom_unlocked = "unlocked_indication";
 
+/**
+ * Object does communicate with web3 and smart contract.
+ */
 const App = {
   web3: null,
-  account: null,
-  padLock: null,
-  locked: false,
+  account: null,    // selected account to communicate with contract
+  padLock: null,    // smart contract interface
 
   /**
-   * Setup connection to contract
+   * Function to setup connection to smart contract
    */
   start: async function () {
     const { web3 } = this;
@@ -22,16 +24,18 @@ const App = {
       // get contract instance
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = padLockTokenArtifact.networks[networkId];
+
+      // setup smart contract
       this.padLock = new web3.eth.Contract(
         padLockTokenArtifact.abi,
         deployedNetwork.address
       );
 
-      // get accounts
+      // register selected account
       const accounts = await web3.eth.getAccounts();
       this.account = accounts[0];
 
-      // log event
+      // logging for Smart Contract RegisterKeyEvent
       this.padLock.events.RegisterKeyEvent(console.log)
 
     } catch (error) {
@@ -45,15 +49,19 @@ const App = {
   getPubk: async function () {
 
     const { getOwnerKey } = this.padLock.methods;
+
+    // call getOwnerKey contract function
     const pubk = await getOwnerKey(Lock.id).call();
 
     return pubk;
   }
 };
 
+/**
+ * Object Lock for saving lock data
+ */
 const Lock = {
   id: "",
-  locked: true,
 
   /**
    * Will register an id on this lock instance
@@ -61,8 +69,8 @@ const Lock = {
    */
   registerLock: function registerLock(id) {
     if (this.id == "") {
+      // if no id registered
       if (id == "") {
-        // if no id registered
 
         alert("Cannot register empty ID")
         return
@@ -70,6 +78,8 @@ const Lock = {
 
       Lock.id = id;
       alert("Succesful registered Id for Lock!")
+
+      // update page html
       Page.onRegister();
 
       return;
@@ -79,20 +89,26 @@ const Lock = {
     }
   },
 
+  /**
+   * Returns whether the lock has a id
+   */
   getRegistered: function getRegistered() {
     return Lock.id != "";
   },
 
   /**
-   * Verifies signature on singed message
+   * Verifies signature on a singed message
    * @param {String} cleartext signed message
    * @param {String} pubk Public key to verify singature
    */
   opgp_verifySignature: async function (cleartext, pubk) {
     var verified;
     try {
+
+      // verify the data
       verified = await openpgp.verify({
 
+        // parse the message and the publc key
         message: await openpgp.cleartext.readArmored(cleartext),           // parse armored message
         publicKeys: (await openpgp.key.readArmored(pubk)).keys             // for verification
       });
@@ -105,13 +121,14 @@ const Lock = {
     if (!valid) {
       return false;
     }
+
     // check timestamp (is in ms) if still valid
     if (verified.data < Date.now() - 30 * 1000) {
       alert("Unlock Message is to old!")
       return false;
     }
 
-    console.log('signed by key id ' + verified.signatures[0].keyid.toHex());
+    // console.log('signed by key id ' + verified.signatures[0].keyid.toHex());
     return true;
 
   },
@@ -121,6 +138,8 @@ const Lock = {
    * @param {String} cleartext_timestamp signed message
    */
   verifyOwner: async function (cleartext_timestamp) {
+
+    // calls getOwnerKey contract function to return public key
     const pubk = await App.getPubk();
 
     if (pubk.length <= 0 || cleartext_timestamp.length <= 0) {
@@ -128,6 +147,7 @@ const Lock = {
       return
     }
 
+    // verify signature
     const status = await this.opgp_verifySignature(cleartext_timestamp, pubk);
 
     if (!status) {
@@ -136,13 +156,9 @@ const Lock = {
     }
     alert("signature verifyied! Welcome")
 
-    // hide unlock form and show Unlock Indication
+    // update Page Html
     Page.onunlock()
 
-  },
-
-  getRegistered: function getRegistered() {
-    return Lock.id != "";
   },
 };
 
@@ -207,22 +223,26 @@ const Page = {
   },
 }
 
-
+// make the Variables available globally
 window.App = App;
 window.Lock = Lock;
 window.Page = Page;
 
+// onload Setup function
 window.addEventListener("load", function () {
+
+  // if metamask is active
   if (window.ethereum) {
     // use MetaMask's provider
     App.web3 = new Web3(window.ethereum);
     window.ethereum.enable(); // get permission to access accounts
   } else {
-    console.error(
-      "No web3 detected. Reload page!"
-    );
+    alert("Cannot use metamask! Reload Page.")
   }
 
+  // setup the smart contract connection
   App.start();
+
+  // set up the html
   Page.onload();
 });

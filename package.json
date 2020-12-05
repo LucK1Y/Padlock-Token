@@ -1,5 +1,5 @@
 {
-  "name": "dhbw-truffle-project",
+  "name": "Padlock-Token",
   "version": "0.1.0",
   "description": "A simple project to learn Ethereum Smart Contract development",
   "main": "index.js",
@@ -19,12 +19,12 @@
     "type": "git",
     "url": "git+https://github.com/LucK1Y/dhbw-truffle-project.git"
   },
-  "author": "n Paar Studenten",
+  "author": "n Paar Studenten: Einfach Super (CrossField1973,TM-93,LucK1Y)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/LucK1Y/dhbw-truffle-project/issues"
+    "url": "https://github.com/LucK1Y/Padlock-Token/issues"
   },
-  "homepage": "https://github.com/LucK1Y/dhbw-truffle-project#readme",
+  "homepage": "https://github.com/LucK1Y/Padlock-Token/wiki",
   "devDependencies": {
     "ganache-cli": "^6.12.0",
     "truffle": "^5.1.47"
