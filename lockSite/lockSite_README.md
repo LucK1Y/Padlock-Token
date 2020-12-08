@@ -1,11 +1,9 @@
-I HAVE TO DO:
-    UNlock The Lock
-    Show metadata
-    
+# Installation and Run:
+- ``npm i`` for installing dependencies
+- ``npm run locksite``  for running the frontend
 
+# Design Decisions
+- Webpack server, for simple transportation of page
 
-# Installation & Run
-- Installation: ``npm i``
-- run: ``npm run lockSite``
-
-runs on port *4000* !
+# View
+- Go to http://localhost:4000/
