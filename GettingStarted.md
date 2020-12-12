@@ -56,7 +56,7 @@ Most of the cases, the key files can be found in the user space in the directory
 ## Setup and lock
 1. On the **locksite**: (http://localhost:4000/) paste in your public key content and press _Register Lock_.
 2. When you get a successfully registered id, copy the random string above the public key field.
-3. On the **chainsite**: (http://localhost:4000/) paste the copied id and submit.
+3. On the **chainsite**: (http://localhost:8080/) paste the copied id and submit.
 
 The lock is now registered and locked.
 The public key is registered with the lock id and the owner address. 
